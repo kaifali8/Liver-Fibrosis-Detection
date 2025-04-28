@@ -1,0 +1,150 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}Login{% endblock title%} 
+{% block content %}
+
+<!-- Navbar Start -->
+<nav
+  class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
+  data-wow-delay="0.1s"
+>
+  <a
+    href="{% url "index" %}"
+    class="navbar-brand d-flex align-items-center px-4 px-lg-5"
+  >
+    <h1 class="m-0 text-primary">
+      <i class="fa-solid fa-briefcase-medical"></i> Liver Fibrosis Detection
+    </h1>
+  </a>
+  <button
+    type="button"
+    class="navbar-toggler me-4"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarCollapse"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <div class="navbar-nav ms-auto p-4 p-lg-0">
+      <a href="{% url "index" %}" class="nav-item nav-link">Home</a>
+      <a href="{% url "about" %}" class="nav-item nav-link">About</a>
+      <a href="{% url "contact" %}" class="nav-item nav-link">Contact</a>
+      <a href="{% url "adminlogin" %}" class="nav-item nav-link">Admin Login</a>
+    </div>
+    <a
+      href="{% url "login" %}"
+      class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block active"
+      >LOGIN<i class="fa fa-arrow-right ms-3 wow fadeInLeft"></i
+    ></a>
+  </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- Sign In Start -->
+<div
+  class="container-xxl py-5 d-flex justify-content-center align-items-center"
+  style="min-height: 85vh"
+>
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <!-- Left Side: Image (Hidden on Small Screens) -->
+      <div class="col-lg-6 d-none d-md-block text-center wow fadeInLeft">
+        <img
+          src="{% static 'user/img/signin.png' %}"
+          alt="Sign In"
+          class="img-fluid"
+          style="max-width: 100%; height: auto"
+        />
+      </div>
+
+      <!-- Right Side: Sign In Form -->
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="bg-light rounded d-flex flex-column align-items-center p-5">
+          <!-- Sign In Heading -->
+          <h2 class="mb-4 text-center pt-2 pb-5">SIGN IN</h2>
+          <form id="loginForm" style="width: 100%" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row g-3">
+              <!-- Username Input -->
+              <div class="col-12">
+                <p class="mt-2 black" style="color: black">Email</p>
+                <input name="email"
+                  type="email"
+                  id="username"
+                  class="form-control border-0"
+                  placeholder="Enter Username"
+                  style="height: 55px"
+                />
+              </div>
+
+              <!-- Password Input -->
+              <div class="col-12 position-relative">
+                <p class="mt-2" style="color: black">Password</p>
+                <input name="password"
+                
+                  type="password"
+                  id="password"
+                  class="form-control border-0"
+                  placeholder="Enter Password"
+                  style="height: 55px; padding-right: 50px"
+                />
+
+                <!-- Show Password Button -->
+                <button
+                  type="button"
+                  id="togglePassword"
+                  class="btn btn-sm position-absolute"
+                  style="top: 55%; right: 10px; transform: translateY(-50%)"
+                >
+                  Show
+                </button>
+
+                <!-- Forgot Password Link -->
+                <div class="text-end mt-2">
+                  <a href="#" class="text-primary">Forgot password?</a>
+                </div>
+              </div>
+
+              <!-- Error Message -->
+              <div class="col-12">
+                <p id="errorMessage" class="text-danger text-center d-none"></p>
+              </div>
+
+              <!-- Login Button -->
+              <div class="col-12 mt-5">
+                <button class="btn btn-primary w-100 py-3" type="submit">
+                  Login
+                </button>
+              </div>
+
+              <!-- Sign Up Link -->
+              <div class="col-12 text-center mt-2">
+                <span>Don't have an account?</span>
+                <a href="{% url "signup" %}" class="text-primary">Sign up</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Sign In End -->
+
+<!-- JavaScript for Show/Hide Password -->
+<script>
+
+  document
+    .getElementById("togglePassword")
+    .addEventListener("click", function () {
+      var passwordField = document.getElementById("password");
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        this.textContent = "Hide";
+      } else {
+        passwordField.type = "password";
+        this.textContent = "Show";
+      }
+    });
+</script>
+{% endblock content%}

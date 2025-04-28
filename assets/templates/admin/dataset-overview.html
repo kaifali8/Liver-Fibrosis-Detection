@@ -1,0 +1,21 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block title %}Test Split{% endblock title%}
+{% block content %}
+          <!-- Test Split Section -->
+          <div class="p-4">
+            <div class="card">
+                <h5 class="card-header text-center" style="font-size: 1.8rem; font-weight: bold;">Dataset analysis</h5>
+                <hr style="height: 1px; background-color: #000; border: none; margin: 0 20px;">
+                <div class="p-4 d-flex flex-column align-items-center rounded shadow-sm" style="background-color: #f8f9fa; border-radius: 15px;">
+                    <p style="font-size: 1.1rem; text-align: center; max-width: 80%;">
+                        This dataset is curated for the Liver Fibrosis Detection Project, focusing on the analysis of liver histopathology through ultrasound imaging. It comprises high-quality liver ultrasound images annotated to highlight varying stages of fibrosis. The dataset is designed to support advanced research and model development in medical imaging, aiding in the accurate detection and classification of liver fibrosis
+                    </p>
+                    <a href="{% url "datasetinfo" %}">
+                        <button class="border-0 p-3 mt-2 bg-label-primary rounded custom-button" style="font-size: 1.1rem; border-radius: 10px; cursor: pointer;" onclick="">Check More</button>  
+                    </a>
+                </div>
+            </div>
+          </div>
+
+{% endblock content%}

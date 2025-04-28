@@ -1,0 +1,320 @@
+{% extends "base2.html" %}
+{% load static %}
+{% block title %}Profile{% endblock title%}
+{% block content %}
+<style>
+    /* Card hover effect */
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centers elements horizontally */
+        justify-content: center; /* Centers elements vertically */
+        text-align: center; /* Ensures text is centered */
+        height: 100%; /* Ensures the div takes full height */
+    }
+    .divider {
+        width: 50%;
+        height: 2px;
+        background-color: lightblue;
+        margin: 20px auto; /* Centers the divider */
+    }
+    .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-radius: 15px;
+        border: 2px solid lightgray;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Image styling */
+    .img-fluid {
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    h6 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+
+    /* Model card styling */
+    .model-card {
+        border-left: 3px solid #1489f6;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        min-width: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    }
+
+    /* Text styling */
+    .model-card h5,
+    .model-card p {
+        font-size: 22px;
+        margin: 5px 0;
+    }
+
+    .model-btn {
+        border: 2px solid #ddd;
+        padding: 8px 20px;
+        border-radius: 10px;
+        background-color: #007bff;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: white;
+        outline: none;
+    }
+    
+    .model-btn:hover {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .model-btn:active {
+        transform: translateY(2px);
+        box-shadow: none;
+    }
+    .img-container {
+        flex: 1; /* Makes both images take equal space */
+        max-width: 45%; /* Prevents images from being too large */
+        min-width: 250px; /* Ensures they don’t get too small */
+        border: 2px solid lightblue;
+        border-radius: 10px;
+        margin: 0 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px; /* Adds spacing around images */
+    }
+
+    .img-container img {
+        width: 90%; /* Makes images fill their container */
+        height: auto; /* Maintains aspect ratio */
+        display: block; /* Prevents extra space below images */
+    }
+
+    /* Adjust layout for smaller screens */
+    @media (max-width: 768px) {
+        .d-flex {
+            flex-direction: column; /* Stack images vertically */
+        }
+        .img-container {
+            max-width: 80%; /* Increase size for small screens */
+            text-align: center; /* Center align images */
+        }
+    }
+</style>
+
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
+    <a href="{% url "index" %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h1 class="m-0 text-primary"><i class="fa-solid fa-briefcase-medical"></i> Liver Fibrosis Detection</h1>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="{% url "user_dashboard" %}" class="nav-item nav-link">Dashboard</a>
+            <a href="{% url "profile" %}" class="nav-item nav-link">Profile</a>
+            <a href="{% url "detection" %}" class="nav-item nav-link active">Detection</a>
+            <a href="{% url "user_feedback" %}" class="nav-item nav-link">Feedback</a>
+        </div>
+        <a href="{% url "user_logout" %}" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">LOGOUT<i class="fa fa-arrow-right ms-3 wow fadeInLeft"></i></a>
+    </div>
+</nav>
+<!-- Navbar End -->
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-2 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Detection Result</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="#">User</a></li>
+                <li class="breadcrumb-item"><a class="text-white" href="#">Detection</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color: darkblue;">Detection Result</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Image Cards Section -->
+<div class="row p-4 mx-4 g-2 justify-content-center">
+    <h3 class="text-center pb-4">Images Segmentation</h3>
+    <!-- Uploaded Image Card -->
+    <div class="col-md-4 col-sm-6 d-flex justify-content-center">
+        <div class="card h-100 text-center shadow-sm rounded-4 p-3" style="width: 350px;">
+            <img src="data:image/jpeg;base64,{{uploaded_image_base64}}" alt="Uploaded Image" class="img-fluid rounded mb-2" style="height: 250px;">
+            <h6 class="mb-0 fw-bold" style="color: #333;">Uploaded Image</h6>
+        </div>
+    </div>
+
+    <!-- Grayscale Image Card -->
+    <div class="col-md-4 col-sm-6 d-flex justify-content-center">
+        <div class="card h-100 text-center shadow-sm rounded-4 p-3" style="width: 350px;">
+            <img src="data:image/jpeg;base64,{{grayscale_image_base64}}" alt="Grayscale Image" class="img-fluid rounded mb-2" style="height: 250px;">
+            <h6 class="mb-0 fw-bold" style="color: #333;">Grayscale Image</h6>
+        </div>
+    </div>
+
+    <!-- Segmented Image Card -->
+    <div class="col-md-4 col-sm-6 d-flex justify-content-center">
+        <div class="card h-100 text-center shadow-sm rounded-4 p-3" style="width: 350px;">
+            <img src="data:image/jpeg;base64,{{segmented_image_base64}}" alt="Segmented Image" class="img-fluid rounded mb-2" style="height: 250px;">
+            <h6 class="mb-0 fw-bold" style="color: #333;">Segmented Image</h6>
+        </div>
+    </div>
+</div>
+<div class="divider"></div>
+<!-- Model Cards Section -->
+<div>
+    <h3 class="text-center ">Model Details and Result</h3>
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <!-- Left: Chart Section -->
+            <div class="col-md-6 d-flex justify-content-center">
+                <canvas id="accuracyChart" style="max-width: 100%; height: 400px;"></canvas>
+            </div>
+    
+            <!-- Right: Information Section -->
+            <div class="col-md-6 center-content">
+                <h3 class="fw-bold">{{predicted_label}} - {{predicted_note.title}}</h3>
+                <p class="mt-4" style="font-size: 17px;">
+                    {{predicted_note.description}}
+                </p>
+                <a href="detection">
+                    <button type="button" class="model-btn mx-2 mt-4" data-model="CNN" name="model_tpye">
+                        Detect again
+                    </button>
+                </a>
+            </div>            
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center my-4 p-4" >
+        <div class="row g-4 mx-4 justify-content-center">
+            <!-- Model Name Card -->
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="model-card shadow text-center">
+                    <h5 class="fw-bold mb-2">Model:</h5>
+                    <p class="mb-0">{{model_name.title}}</p>
+                </div>
+            </div>
+    
+            <!-- Model Accuracy Card -->
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="model-card shadow text-center">
+                    <h5 class="fw-bold mb-2">Model Accuracy:</h5>
+                    <p class="mb-0">{{model_accuracy}}%</p>
+                </div>
+            </div>
+            <!-- Model Accuracy Card -->
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="model-card shadow text-center">
+                    <h5 class="fw-bold mb-2">Prediction:</h5>
+                    <p class="mb-0">{{predicted_label}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="divider"></div>
+<div class="p-4">
+    <h3 class="text-center pb-4">Model Accuracy and Loss Graph</h3>
+    <div class="d-flex flex-wrap justify-content-center align-items-center">
+        <div class="img-container">
+            <img src="{% static graph_accuracy %}" alt="Model Accuracy">
+        </div>
+        <div class="img-container">
+            <img src="{% static graph_loss %}" alt="Model Loss">
+        </div>
+    </div>
+</div> 
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('accuracyChart').getContext('2d');
+        const accuracy = "{{model_accuracy}}" ;
+        const label = "{{model_label}}";
+                     
+        const accuracyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [0, 100],  // Adding min and max values to x-axis
+                datasets: [{
+                    label: label,
+                    data: [{ x: 0, y: 0 }, { x: accuracy, y: accuracy }],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.1,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: 'rgba(75, 192, 192, 1)',
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointHoverBorderColor: 'rgba(75, 192, 192, 1)',
+                    showLine: true  // Ensures the line is drawn
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: {
+                            display: true,
+                            text: 'Accuracy (%)'
+                        },
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 10,
+                            callback: function(value) { return value; },
+                            beginAtZero: true
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Accuracy (%)'
+                        },
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 10,
+                            beginAtZero: true
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function() {
+                                return '';
+                            },
+                            label: function(tooltipItem) {
+                                return tooltipItem.dataset.label + ': ' + tooltipItem.raw.y + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock content %}

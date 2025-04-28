@@ -1,0 +1,40 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block title %}MobileNet Result{% endblock title%}
+{% block content %}
+          <div class="p-4">
+            <div class="card p-4 shadow-sm" style="border-radius: 15px;">
+                <h5 class="card-header text-center" style="font-size: 1.8rem; font-weight: bold;">MOBILENET MODEL RESULT</h5>
+                <hr style="height: 2px; background-color: #000; border: none; margin: 10px auto; width: 80%;">
+                
+                <div class="table-responsive text-nowrap p-4">
+                    <table class="table text-center" style="border-collapse: separate; border-spacing: 0 10px;">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="padding: 12px; font-size: 1.1rem;">S.NO</th>
+                                <th style="padding: 12px; font-size: 1.1rem;">Task</th>
+                                <th style="padding: 12px; font-size: 1.1rem;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr class="table-row">
+                                <td>1</td>
+                                <td>Model Name</td>
+                                <td>{{model_name}}</td>
+                            </tr>
+                            <tr class="table-row">
+                                <td>2</td>
+                                <td>Model Accuracy</td>
+                                <td>{{accuracy}}</td>
+                            </tr>
+                            <tr class="table-row">
+                                <td>3</td>
+                                <td>Model Executed</td>
+                                <td>MobileNet Model Executed Successfully</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endblock content%}

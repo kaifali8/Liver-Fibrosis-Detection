@@ -1,0 +1,21 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block title %}MobileNet{% endblock title%}
+{% block content %}
+          <!-- MobileNet Section -->
+          <div class="p-4">
+            <div class="card">
+                <h5 class="card-header text-center" style="font-size: 1.8rem; font-weight: bold;">MobileNet (Lightweight CNN for Mobile Devices)</h5>
+                <hr style="height: 1px; background-color: #000; border: none; margin: 0 20px;">
+                <div class="p-4 d-flex flex-column align-items-center rounded shadow-sm" style="background-color: #f8f9fa; border-radius: 15px;">
+                    <p style="font-size: 1.1rem; text-align: center; max-width: 80%;">
+                        MobileNet is a lightweight deep learning model optimized for mobile and edge devices. It is designed to deliver high accuracy with low computational cost, making it suitable for real-time applications. MobileNet is commonly used in image classification, object detection, face recognition, and real-time applications like augmented reality and autonomous systems.
+                    </p>
+                    <a href="{% url "mobilenetresult" %}">
+                        <button class="border-0 p-3 mt-2 bg-label-primary rounded custom-button" style="font-size: 1.1rem; border-radius: 10px; cursor: pointer;" onclick="">Check Results</button>  
+                    </a>
+                </div>
+            </div>
+          </div>
+          <!-- MobileNet Section End -->
+{% endblock content%}

@@ -1,0 +1,133 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title %}OTP{% endblock title%}
+{% block content %}
+
+<!-- Navbar Start -->
+<nav
+  class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn"
+  data-wow-delay="0.1s"
+>
+  <a
+    href="{% url "index" %}"
+    class="navbar-brand d-flex align-items-center px-4 px-lg-5"
+  >
+    <h1 class="m-0 text-primary">
+      <i class="fa-solid fa-briefcase-medical"></i> Liver Fibrosis Detection
+    </h1>
+  </a>
+  <button
+    type="button"
+    class="navbar-toggler me-4"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarCollapse"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <div class="navbar-nav ms-auto p-4 p-lg-0">
+      <a href="{% url "index" %}" class="nav-item nav-link">Home</a>
+      <a href="{% url "about" %}" class="nav-item nav-link">About</a>
+      <a href="{% url "contact" %}" class="nav-item nav-link">Contact</a>
+      <a href="{% url "adminlogin" %}" class="nav-item nav-link">Admin Login</a>
+    </div>
+    <a
+      href="{% url "login" %}"
+      class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block active"
+      >LOGIN<i class="fa fa-arrow-right ms-3 wow fadeInLeft"></i
+    ></a>
+  </div>
+</nav>
+<!-- Navbar End -->
+<!-- OTP Section Start -->
+<div
+  class="container-xxl py-5 d-flex justify-content-center align-items-center"
+  style="min-height: 85vh"
+>
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <!-- Left Side: Image (Hidden on Small Screens) -->
+      <div class="col-lg-6 d-none d-md-block text-center wow fadeInLeft">
+        <img
+          src="{% static "user/img/otp.png" %}"
+          alt="Sign In"
+          class="img-fluid"
+          style="max-width: 100%; height: auto"
+        />
+      </div>
+
+      <!-- Right Side: Sign In Form -->
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="bg-light rounded d-flex flex-column align-items-center p-5">
+          <!-- Sign In Heading -->
+          <h2 class="mb-4 text-center pt-2 pb-2">Verify OTP</h2>
+          <form style="width: 100%" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-lg-12">
+                <div class="contact_form_container">
+                  <form
+                    method="post"
+                    enctype="multipart/form-data"
+                    class="contact_form"
+                    id="contact_form"
+                  >
+                    <div class="d-flex flex-column" style="min-width: 470px">
+                      <div class="otp_container mt-2 mb-3">
+                        <input type="text" class="otp_box" maxlength="1" inputmode="numeric" pattern="[0-9]" name="otp1"/>
+                        <input type="text" class="otp_box" maxlength="1" inputmode="numeric" pattern="[0-9]" name="otp2"/>
+                        <input type="text" class="otp_box" maxlength="1" inputmode="numeric" pattern="[0-9]" name="otp3"/>
+                        <input type="text" class="otp_box" maxlength="1" inputmode="numeric" pattern="[0-9]" name="otp4"/>
+                      </div>
+                      <input type="hidden" name="otp" id="otp_input" />
+                      
+                    </div>
+                    <div class="col-12 mt-5">
+                      <button class="btn btn-primary w-100 py-3" type="submit">
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- OTP Section End -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const otpInputs = document.querySelectorAll(".otp_box");
+    const otpHiddenInput = document.getElementById("otp_input");
+  
+    otpInputs.forEach((input, index) => {
+      input.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, ""); // Allow only numbers
+        if (e.target.value.length === 1) {
+          if (index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus(); // Move to next input
+          } else {
+            otpInputs[index].blur(); // Remove focus if it's the last digit
+            collectOTP(); // Collect OTP when all fields are filled
+          }
+        }
+      });
+  
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !e.target.value && index > 0) {
+          otpInputs[index - 1].focus(); // Move to previous input
+        }
+      });
+    });
+  
+    function collectOTP() {
+      let otpValue = "";
+      otpInputs.forEach((input) => (otpValue += input.value));
+      otpHiddenInput.value = otpValue; // Store OTP in hidden input for form submission
+    }
+  });
+</script>
+{% endblock content%}
